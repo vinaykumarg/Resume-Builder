@@ -4,11 +4,16 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -26,12 +31,13 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.vinayg.resumebuilder.Summary.SummaryActivity;
 import com.example.vinayg.resumebuilder.R;
+import com.example.vinayg.resumebuilder.Summary.SummaryActivity;
 import com.example.vinayg.resumebuilder.adapters.EducationListViewAdapter;
 import com.example.vinayg.resumebuilder.adapters.InterestsListViewAdapter;
 import com.example.vinayg.resumebuilder.adapters.ProjectListViewAdapter;
@@ -52,6 +58,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 public class ProfileActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener ,View.OnClickListener{
 
@@ -59,6 +69,7 @@ public class ProfileActivity extends AppCompatActivity
     private static final int REFRESH = 222;
     private static final int REQUEST_TAKE_PHOTO = 1;
     private static final int PICK_IMAGE = 2;
+    private static final int PERMISSION_REQUEST_CODE = 1222;
     private SessionManager session;
     private TextView username;
     private TextView Emailid;
@@ -88,15 +99,16 @@ public class ProfileActivity extends AppCompatActivity
     private TextView mExperience;
     private AlertDialog experienceDialog;
     private EditText experience;
+    private RelativeLayout view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        view = (RelativeLayout) findViewById(R.id.content_main);
         mMyAppDb = new MyAppDb(this);
         mMyAppDb.open();
         session = new SessionManager(getApplicationContext());
-
         if (!session.isLoggedIn()) {
             session.checkLogin();
         }
@@ -321,6 +333,65 @@ public class ProfileActivity extends AppCompatActivity
         experienceDialog.show();
     }
 
+    public boolean checkPermission(){
+            int result = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
+            int result1 = ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA);
+
+            return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestPermission() {
+
+        ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, PERMISSION_REQUEST_CODE);
+
+    }
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0) {
+
+                    boolean writeStorageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    boolean cameraAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+
+                    if (writeStorageAccepted && cameraAccepted) {
+                        Snackbar.make(view, "Permission Granted, Now you can memory and camera.", Snackbar.LENGTH_LONG).show();
+                        dispatchTakePictureIntent();
+                    } else {
+
+                        Snackbar.make(view, "Permission Denied, You cannot access location data and camera.", Snackbar.LENGTH_LONG).show();
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            if (shouldShowRequestPermissionRationale(ACCESS_FINE_LOCATION)) {
+                                showMessageOKCancel("You need to allow access to both the permissions",
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                                    requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA},
+                                                            PERMISSION_REQUEST_CODE);
+                                                }
+                                            }
+                                        });
+                                return;
+                            }
+                        }
+
+                    }
+                }
+
+
+                break;
+        }
+    }
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(this)
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
+    }
+
     private DialogInterface getDialog() {
         return experienceDialog;
     }
@@ -329,12 +400,17 @@ public class ProfileActivity extends AppCompatActivity
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.dialog_title));
         LayoutInflater inflater = getLayoutInflater();
-        View view = inflater.inflate(R.layout.profilepicdialog, null);
+        final View view = inflater.inflate(R.layout.profilepicdialog, null);
         TextView CameraButton = (TextView) view.findViewById(R.id.camera) ;
         CameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dispatchTakePictureIntent();
+                if (checkPermission()){
+                    Log.d(TAG,"true");
+                    dispatchTakePictureIntent();
+                } else{
+                    requestPermission();
+                }
                 dismissDialog();
 
             }
@@ -387,28 +463,29 @@ public class ProfileActivity extends AppCompatActivity
         return image;
     }
     private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-                Log.d(TAG,"image created");
-            } catch (IOException ex) {
-                // Error occurred while creating the File
+        Log.d(TAG,"dispatchTakePictureIntent");
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            // Ensure that there's a camera activity to handle the intent
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                // Create the File where the photo should go
+                File photoFile = null;
+                try {
+                    photoFile = createImageFile();
+                    Log.d(TAG, "image created");
+                } catch (IOException ex) {
+                    // Error occurred while creating the File
 
+                }
+                // Continue only if the File was successfully created
+                if (photoFile != null) {
+                    Uri photoURI = FileProvider.getUriForFile(this,
+                            "com.example.android.fileprovider",
+                            photoFile);
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                    Log.d(TAG, "dispatchTakePictureIntent");
+                    startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                }
             }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.example.android.fileprovider",
-                        photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                Log.d(TAG,"dispatchTakePictureIntent");
-                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-            }
-        }
     }
 
     private void dispatchImageFromGallery() {

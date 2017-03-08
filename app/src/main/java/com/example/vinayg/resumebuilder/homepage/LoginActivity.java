@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,11 +63,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private GoogleApiClient mGoogleApiClient;
     private SignInButton signInButton;
     private String userid="";
+    private RelativeLayout view ;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        view = (RelativeLayout) findViewById(R.id.activity_login);
         createFbLogin();
         createGmailLogin();
     }
@@ -155,7 +159,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 // App code
                 Toast.makeText(
                         LoginActivity.this,
-                        "error",
+                        "no internet connection",
                         Toast.LENGTH_LONG).show();
             }
         });
@@ -289,6 +293,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Snackbar.make(view, "no internet connection.", Snackbar.LENGTH_LONG).show();
 
     }
     private void signIn() {
