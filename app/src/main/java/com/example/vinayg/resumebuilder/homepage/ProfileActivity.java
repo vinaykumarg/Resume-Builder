@@ -95,7 +95,6 @@ public class ProfileActivity extends AppCompatActivity
         setContentView(R.layout.activity_profile);
         mMyAppDb = new MyAppDb(this);
         mMyAppDb.open();
-        AlertDialogManager alert = new AlertDialogManager();
         session = new SessionManager(getApplicationContext());
 
         if (!session.isLoggedIn()) {
