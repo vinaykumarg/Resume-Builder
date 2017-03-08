@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_main2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.vinayg.resumebuilder.homepage.ProfileActivity"
+    tools:showIn="@layout/app_bar_main">
+
+    <RelativeLayout
+        android:id="@+id/profile_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#37A4DC"
+        android:paddingBottom="24dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        <ImageButton
+            android:id="@+id/user_profile_photo"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/default_image"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="name : "
+            android:textSize="14sp"
+            android:textColor="#fff"
+            android:layout_alignBottom="@+id/user_profile_name"
+            android:layout_toLeftOf="@+id/user_profile_name"
+            android:layout_toStartOf="@+id/user_profile_name"
+            android:id="@+id/textView3"
+            android:layout_alignTop="@+id/user_profile_name"/>
+        <TextView
+            android:id="@+id/user_profile_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Viral Android"
+            android:textColor="#fff"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="70dp"
+            android:layout_marginEnd="70dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email : "
+            android:layout_marginTop="10dp"
+            android:textColor="#fff"
+            android:textSize="14sp"
+            android:layout_toLeftOf="@+id/user_profile_email"
+            android:layout_below="@+id/user_profile_name"
+            android:id="@+id/textView4"/>
+        <TextView
+            android:id="@+id/user_profile_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/user_profile_name"
+            android:layout_alignStart="@+id/user_profile_name"
+            android:layout_alignLeft="@+id/user_profile_name"
+            android:text="Android@gmail.com"
+            android:layout_marginTop="10dp"
+            android:textColor="#fff"
+            android:textSize="14sp"
+            android:layout_marginRight="17dp"
+            android:layout_marginEnd="17dp"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Experience :"
+            android:textColor="#fff"
+            android:textSize="14sp"
+            android:layout_marginTop="10dp"
+            android:layout_alignBaseline="@+id/user_profile_experience"
+            android:layout_alignBottom="@+id/user_profile_experience"
+            android:layout_alignLeft="@+id/textView4"
+            android:layout_alignStart="@+id/textView4"
+            android:id="@+id/textView5"/>
+
+        <TextView
+            android:id="@+id/user_profile_experience"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0 Years"
+            android:textColor="#fff"
+            android:textSize="14sp"
+            android:clickable="true"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/user_profile_email"
+            android:layout_alignRight="@+id/user_profile_name"
+            android:layout_alignEnd="@+id/user_profile_name"/>
+
+    </RelativeLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_below="@+id/profile_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/profile_layout"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp"
+                android:layout_margin="5dp"
+                android:clickable="true"
+                android:id="@+id/Summary"
+                android:padding="20dp"
+                android:background="#fff">
+                <TextView
+                    android:textColor="#096AAB"
+                    android:textSize="@dimen/abc_text_size_large_material"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Summary" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:text="empty"
+                    android:id="@+id/aboutMe"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/textlines"
+                android:padding="20dp"
+                android:id="@+id/projects"
+                android:orientation="vertical"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp"
+                android:layout_margin="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/project"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/project"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/project"
+                        android:textColor="#096AAB"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:textSize="@dimen/abc_text_size_large_material"
+                        android:text="@string/projectstitle"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/add"/>
+                </RelativeLayout>
+
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/project_list"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/textlines"
+                android:padding="20dp"
+                android:id="@+id/educations"
+                android:orientation="vertical"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp"
+                android:layout_margin="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/educationimage"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/education"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/educationimage"
+                        android:textColor="#096AAB"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:textSize="@dimen/abc_text_size_large_material"
+                        android:text="@string/educationtile"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/add"/>
+                </RelativeLayout>
+
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/education_list"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/textlines"
+                android:padding="20dp"
+                android:id="@+id/interests"
+                android:orientation="vertical"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp"
+                android:layout_margin="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/interestimage"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ball"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/interestimage"
+                        android:textColor="#096AAB"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:textSize="@dimen/abc_text_size_large_material"
+                        android:text="@string/intereststile"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/add"/>
+                </RelativeLayout>
+
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/interest_list"/>
+            </LinearLayout>
+
+        </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+
+
+</RelativeLayout>

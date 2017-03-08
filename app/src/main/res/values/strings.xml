@@ -1,0 +1,61 @@
+<resources>
+    <string name="app_name">ResumeBuilder</string>
+    <string name="title">Resume\nBuilder</string>
+    <string name="facebook_app_id">428899797453461</string>
+    <string name="fb_login_protocol_scheme">428899797453461</string>
+    <string name="de_authorize_app">deaouth</string>
+    <string name="welcome">welcome</string>
+    <string-array name="planets_array">
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+    </string-array>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="action_websearch">Web search</string>
+    <string name="app_not_available">Sorry, there\'s no web browser available</string>
+    <string name="title_activity_main2">Profile</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_summary">Summary</string>
+    <string name="title_activity_projects">Projects</string>
+    <string name="title_activity_education">Educations</string>
+    <string name="title_activity_interests">Interests</string>
+    <string name="AboutME">AboutMe</string>
+    <string name="save">Save</string>
+    <string name="title_activity_add_projects">Add Projects</string>
+    <string name="hinttitle">Title</string>
+    <string name="hint_Desc">Description</string>
+    <string name="delete">delete</string>
+    <string name="hintschool">School/ College</string>
+    <string name="hint_Stream">Board/ Stream</string>
+    <string name="startyear">Start Year : </string>
+    <string name="stopyear">End Year : </string>
+    <string name="hint_Score">Score</string>
+    <string name="Where">Where did you study?</string>
+    <string name="edit">edit</string>
+    <string name="interest">Interest</string>
+    <string name="projectstitle">Projects</string>
+    <string name="educationtile">Education</string>
+    <string name="intereststile">Interests</string>
+    <string name="dialog_title">Select  Image from</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="ok">ok</string>
+    <string name="cancel">cancel</string>
+    <string name="experience">Experience</string>
+    <string name="Enterexp">Enter Experience</string>
+    <string name="title_activity_edit_projects">Edit Project</string>
+    <string name="title_activity_add_education">Add Educational Qualifications</string>
+    <string name="title_activity_edit_education">Edit Education</string>
+    <string name="title_activity_add_interest">Add Interests</string>
+    <string name="title_activity_edit_interest">Edit Interest</string>
+</resources>
