@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.vinayg.resumebuilder.R;
-import com.example.vinayg.resumebuilder.database.Interest;
+import com.example.vinayg.resumebuilder.models.Interest;
 
 import java.util.List;
 

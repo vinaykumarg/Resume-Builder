@@ -26,62 +26,65 @@ public class MyDataHelper extends SQLiteOpenHelper {
     public static final String TABLE_PROJECTS = "projects";
     public static final String TABLE_INTERESTS = "interests";
 
-    // Common column names
+    // User Table - column names
     public static final String KEY_ID = "id";
+    public static final String COLUMN_EMAIL = "email";
+    public static final String COLUMN_EXPERIENCE = "experience";
+    public static final String COLUMN_KEY_UID = "uid";
+    // Summary Table - column names
+    public static final String COLUMN_SUMMARY = "summary";
+    // Interest Table - column names
+    public static final String COLUMN_INTEREST = "interest";
+    public static final String COLUMN_KEY_INTERESTID = "interest_id";
+    // Education Table - column names
+    public static final String COLUMN_KEY_EDUCATION = "education_key";
+    public static final String COLUMN_TYPEOFINSTITUTE = "institute_type";
+    public static final String COLUMN_INSTITUTE = "institute";
+    public static final String COLUMN_STREAM = "stream";
+    public static final String COLUMN_START = "start";
+    public static final String COLUMN_STOP = "stop";
+    public static final String COLUMN_SCORE = "score";
+    // Project Table - column names
+    public static final String COLUMN_KEY_PROJECT = "projectid";
+    public static final String COLUMN_TITLE = "title";
+    public static final String COLUMN_DESCRIPTION = "description";
 
 
-    // NOTES Table - column names
-    public static final String KEY_EMAIL = "email";
-    public static final String KEY_EXPERIENCE = "experience";
-    public static final String KEY_UID = "uid";
-    public static final String KEY_TITLE = "title";
-    public static final String KEY_DESCRIPTION = "description";
-    public static final String KEY_SUMMARY = "summary";
-    public static final String KEY_INTEREST = "interest";
-    public static final String KEY_EDUCATION = "education_key";
-    public static final String KEY_INSTITUTE = "institute";
-    public static final String KEY_STREAM = "stream";
-    public static final String KEY_START = "start";
-    public static final String KEY_STOP = "stop";
-    public static final String KEY_SCORE = "score";
-    public static final String KEY_PROJECT = "projectid";
-    public static final String KEY_TYPEOFINSTITUTE = "institute_type";
-    public static final String KEY_INTERESTID = "interest_id";
 
     // Table Create Statements
     // Todo table create statement
     private static final String CREATE_TABLE_USER = "CREATE TABLE "
-            + TABLE_USER + "(" + KEY_ID + " TEXT PRIMARY KEY," + KEY_EMAIL
-            + " TEXT UNIQUE," + KEY_UID + " TEXT," + KEY_EXPERIENCE
+            + TABLE_USER + "(" + KEY_ID + " TEXT PRIMARY KEY," + COLUMN_EMAIL
+            + " TEXT UNIQUE," + COLUMN_KEY_UID + " TEXT," + COLUMN_EXPERIENCE
             + " INTEGER" + ")";
 
 
     // Tag table create statement
     private static final String CREATE_TABLE_SUMMARY = "CREATE TABLE "
             + TABLE_SUMMARY + "(" + KEY_ID + " TEXT, "
-            +KEY_SUMMARY + " TEXT, " +
+            + COLUMN_SUMMARY + " TEXT, " +
             "FOREIGN KEY("+KEY_ID+") REFERENCES "+TABLE_USER+"("+KEY_ID+") )";
 
 
 
     private static final String CREATE_TABLE_EDUCATION = "CREATE TABLE "
-            + TABLE_EDUCATION + "(" +KEY_EDUCATION+" INTEGER PRIMARY KEY AUTOINCREMENT, "+ KEY_ID + " TEXT,"
-            +KEY_TYPEOFINSTITUTE + " TEXT,"
-            + KEY_INSTITUTE + " TEXT," + KEY_STREAM + " TEXT, "
-            + KEY_START + " INTEGER, " + KEY_STOP + " INTEGER, "
-            +KEY_SCORE+" REAL, "
+            + TABLE_EDUCATION + "(" + COLUMN_KEY_EDUCATION +" INTEGER PRIMARY KEY AUTOINCREMENT, "+ KEY_ID + " TEXT,"
+            + COLUMN_TYPEOFINSTITUTE + " TEXT,"
+            + COLUMN_INSTITUTE + " TEXT," + COLUMN_STREAM + " TEXT, "
+            + COLUMN_START + " INTEGER, " + COLUMN_STOP + " INTEGER, "
+            + COLUMN_SCORE +" REAL, "
             +"FOREIGN KEY("+KEY_ID+") REFERENCES "+TABLE_USER+"("+KEY_ID+") " +")";
 
 
     private static final String CREATE_TABLE_PROJECTS = "CREATE TABLE "
-            + TABLE_PROJECTS + "(" +KEY_PROJECT+" INTEGER PRIMARY KEY AUTOINCREMENT, "+ KEY_ID + " TEXT,"
-            + KEY_TITLE + " TEXT," + KEY_DESCRIPTION + " TEXT, "
+            + TABLE_PROJECTS + "(" + COLUMN_KEY_PROJECT +" INTEGER PRIMARY KEY AUTOINCREMENT, "+ KEY_ID + " TEXT,"
+            + COLUMN_TITLE + " TEXT," + COLUMN_DESCRIPTION + " TEXT, "
             +"FOREIGN KEY("+KEY_ID+") REFERENCES "+TABLE_USER+"("+KEY_ID+")" +")";
 
 
     private static final String CREATE_TABLE_INTERESTS = "CREATE TABLE "
-            + TABLE_INTERESTS + "("  +KEY_INTERESTID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+KEY_ID + " TEXT,"
-            + KEY_INTEREST + " TEXT,"
+            + TABLE_INTERESTS + "("  +COLUMN_KEY_INTERESTID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+KEY_ID + " TEXT,"
+            + COLUMN_INTEREST + " TEXT,"
             +"FOREIGN KEY("+KEY_ID+") REFERENCES "+TABLE_USER+"("+KEY_ID+")" +")";
 
     public MyDataHelper(Context context) {

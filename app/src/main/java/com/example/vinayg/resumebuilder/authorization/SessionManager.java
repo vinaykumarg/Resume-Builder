@@ -1,4 +1,4 @@
-package com.example.vinayg.resumebuilder.homepage;
+package com.example.vinayg.resumebuilder.authorization;
 
 /**
  * Created by vinay.g.
@@ -8,27 +8,27 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.util.Log;
 
+import com.example.vinayg.resumebuilder.activities.LoginActivity;
 import com.example.vinayg.resumebuilder.database.MyAppDb;
 
 import java.util.HashMap;
 
 public class SessionManager {
     // Shared Preferences
-    SharedPreferences pref;
+    private final SharedPreferences pref;
 
     // Editor for Shared preferences
-    Editor editor;
+    private final Editor editor;
 
     // Context
-    Context _context;
+    private final Context _context;
 
     // Shared pref mode
-    int PRIVATE_MODE = 0;
+    private final int PRIVATE_MODE = 0;
 
-    // Sharedpref file name
-    private static final String PREF_NAME = "AndroidHivePref";
+    // Sharedpreference file name
+    private static final String PREF_NAME = "ResumeBuilder";
 
     // All Shared Preferences Keys
     private static final String IS_LOGIN = "IsLoggedIn";
@@ -42,7 +42,7 @@ public class SessionManager {
     public static final String KEY_EMAIL = "email";
 
     public static final String KEY_PHOTO = "photouri";
-    private MyAppDb mMyAppDb;
+    private final MyAppDb mMyAppDb;
     // Constructor
     public SessionManager(Context context){
         this._context = context;
@@ -66,7 +66,6 @@ public class SessionManager {
         editor.putString(KEY_ID, id);
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
-        Log.d("Jaffa","success");
         // Storing name in pref
         editor.putString(KEY_NAME, name);
 
@@ -92,12 +91,6 @@ public class SessionManager {
         if(!this.isLoggedIn()){
             // user is not logged in redirect him to Login Activity
             Intent i = new Intent(_context, LoginActivity.class);
-            // Closing all the Activities
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-            // Add new Flag to start new Activity
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
             // Staring Login Activity
             _context.startActivity(i);
         }
@@ -110,7 +103,7 @@ public class SessionManager {
      * Get stored session data
      * */
     public HashMap<String, String> getUserDetails(){
-        HashMap<String, String> user = new HashMap<String, String>();
+        HashMap<String, String> user = new HashMap<>();
         // user name
         user.put(KEY_NAME, pref.getString(KEY_NAME, null));
 
@@ -131,16 +124,11 @@ public class SessionManager {
         // Clearing all data from Shared Preferences
         editor.clear();
         editor.commit();
-
+        mMyAppDb.close();
         // After logout redirect user to Loing Activity
         Intent i = new Intent(_context, LoginActivity.class);
-        // Closing all the Activities
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-        // Add new Flag to start new Activity
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        mMyAppDb.close();
-        // Staring Login Activity
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        // Starting Login Activity
         _context.startActivity(i);
     }
 

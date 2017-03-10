@@ -1,8 +1,11 @@
-package com.example.vinayg.resumebuilder.homepage;
+package com.example.vinayg.resumebuilder.activities;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.view.MenuItem;
+
+import com.example.vinayg.resumebuilder.fragments.MyPreferenceFragment;
+import com.example.vinayg.resumebuilder.authorization.SessionManager;
 
 public class AboutActivity extends PreferenceActivity {
 
@@ -15,8 +18,9 @@ public class AboutActivity extends PreferenceActivity {
         session = new SessionManager(this);
 
     }
-    public static void  logout(){
+    public void  logout(){
         session.logoutUser();
+        finish();
     }
 
     @Override

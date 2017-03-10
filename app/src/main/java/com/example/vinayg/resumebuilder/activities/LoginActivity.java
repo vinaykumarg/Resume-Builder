@@ -1,10 +1,11 @@
-package com.example.vinayg.resumebuilder.homepage;
+package com.example.vinayg.resumebuilder.activities;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.vinayg.resumebuilder.R;
+import com.example.vinayg.resumebuilder.authorization.SessionManager;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -69,6 +71,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ActionBar actionBar = this.getSupportActionBar();
+        actionBar.hide();
         view = (RelativeLayout) findViewById(R.id.activity_login);
         createFbLogin();
         createGmailLogin();
@@ -126,7 +130,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
-                        Log.i("LoginActivity", response.toString());
+                        Log.d("LoginActivity", response.toString());
                         // Get facebook data from login
                         Bundle bFacebookData = getFacebookData(object);
                         if (bFacebookData!=null) {
@@ -257,9 +261,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleSignInResult(result);
-            signOut();
-            StartApp();
+            if (result.isSuccess()) {
+                handleSignInResult(result);
+                signOut();
+                StartApp();
+            } else{
+
+            }
         } else {
             callbackManager.onActivityResult(requestCode, resultCode, data);
         }
@@ -267,9 +275,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private void StartApp() {
         Intent intent = new Intent(this,ProfileActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        finish();
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
@@ -301,10 +308,4 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
-        moveTaskToBack(true);
-    }
 }

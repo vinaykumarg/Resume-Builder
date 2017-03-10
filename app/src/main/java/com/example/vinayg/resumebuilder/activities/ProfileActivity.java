@@ -1,4 +1,4 @@
-package com.example.vinayg.resumebuilder.homepage;
+package com.example.vinayg.resumebuilder.activities;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -37,19 +38,16 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.vinayg.resumebuilder.R;
-import com.example.vinayg.resumebuilder.Summary.SummaryActivity;
 import com.example.vinayg.resumebuilder.adapters.EducationListViewAdapter;
 import com.example.vinayg.resumebuilder.adapters.InterestsListViewAdapter;
 import com.example.vinayg.resumebuilder.adapters.ProjectListViewAdapter;
 import com.example.vinayg.resumebuilder.adapters.Utility;
-import com.example.vinayg.resumebuilder.database.Education;
-import com.example.vinayg.resumebuilder.database.Interest;
+import com.example.vinayg.resumebuilder.authorization.SessionManager;
 import com.example.vinayg.resumebuilder.database.MyAppDb;
-import com.example.vinayg.resumebuilder.database.Projects;
-import com.example.vinayg.resumebuilder.database.Summary;
-import com.example.vinayg.resumebuilder.education.EducationActivity;
-import com.example.vinayg.resumebuilder.interests.InterestsActivity;
-import com.example.vinayg.resumebuilder.projects.ProjectsActivity;
+import com.example.vinayg.resumebuilder.models.Education;
+import com.example.vinayg.resumebuilder.models.Interest;
+import com.example.vinayg.resumebuilder.models.Projects;
+import com.example.vinayg.resumebuilder.models.Summary;
 
 import java.io.File;
 import java.io.IOException;
@@ -72,25 +70,16 @@ public class ProfileActivity extends AppCompatActivity
     private static final int PERMISSION_REQUEST_CODE = 1222;
     private SessionManager session;
     private TextView username;
-    private TextView Emailid;
-    private ImageView profilepic;
+    private TextView EmailId;
+    private ImageView mProfilePic;
     private ImageButton mProfilePicButton;
     private MyAppDb mMyAppDb;
     private ListView mProjectsListView;
-    private LinearLayout mSummaryLinearLayout;
     private TextView mUserName;
     private TextView mEmail;
     private TextView mSummary;
-    private Summary summary;
-    private List<Projects> projects;
-    private List<Education> mEducationList;
-    private List<Interest> interestlist;
     private  String uid ;
-    private HashMap<String, String> user;
     private ListView mEducationListView,mInterestListView;
-    private LinearLayout mProjectsLinearLayout;
-    private LinearLayout mEducationLinearLayout;
-    private LinearLayout mInterestLinearLayout;
     private ProjectListViewAdapter projectListViewAdapter;
     private EducationListViewAdapter educationListViewAdapter;
     private InterestsListViewAdapter interestsListViewAdapter;
@@ -109,10 +98,7 @@ public class ProfileActivity extends AppCompatActivity
         mMyAppDb = new MyAppDb(this);
         mMyAppDb.open();
         session = new SessionManager(getApplicationContext());
-        if (!session.isLoggedIn()) {
-            session.checkLogin();
-        }
-        user = session.getUserDetails();
+        HashMap<String, String> user = session.getUserDetails();
         uid = user.get(SessionManager.KEY_ID);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -125,11 +111,11 @@ public class ProfileActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         username = (TextView) navigationView.getHeaderView(0).findViewById(R.id.user_name);
-        Emailid = (TextView) navigationView.getHeaderView(0).findViewById(R.id.emailid);
-        profilepic = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.imageView);
+        EmailId = (TextView) navigationView.getHeaderView(0).findViewById(R.id.emailid);
+        mProfilePic = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.imageView);
         setResumeHeader();
         AddListViews();
-
+        setAdapters();
 
     }
 
@@ -146,30 +132,30 @@ public class ProfileActivity extends AppCompatActivity
 
 
     private void AddListViews(){
-        mSummaryLinearLayout = (LinearLayout) findViewById(R.id.Summary);
-        mProjectsLinearLayout = (LinearLayout) findViewById(R.id.projects);
-        mEducationLinearLayout = (LinearLayout) findViewById(R.id.educations);
-        mInterestLinearLayout = (LinearLayout) findViewById(R.id.interests);
-        mSummaryLinearLayout.setOnClickListener(this);
-        mProjectsLinearLayout.setOnClickListener(this);
-        mEducationLinearLayout.setOnClickListener(this);
-        mInterestLinearLayout.setOnClickListener(this);
+        LinearLayout summaryLinearLayout = (LinearLayout) findViewById(R.id.Summary);
+        LinearLayout projectsLinearLayout = (LinearLayout) findViewById(R.id.projects);
+        LinearLayout educationLinearLayout = (LinearLayout) findViewById(R.id.educations);
+        LinearLayout interestLinearLayout = (LinearLayout) findViewById(R.id.interests);
+        summaryLinearLayout.setOnClickListener(this);
+        projectsLinearLayout.setOnClickListener(this);
+        educationLinearLayout.setOnClickListener(this);
+        interestLinearLayout.setOnClickListener(this);
         mProjectsListView = (ListView)findViewById(R.id.project_list);
         mEducationListView = (ListView) findViewById(R.id.education_list);
         mInterestListView = (ListView) findViewById(R.id.interest_list);
-
-
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        session.checkLogin();
-        updateUi();
+        if(session.isLoggedIn()) {
+            updateUi();
+        } else {
+            finish();
+        }
     }
 
-    private void swapadapters() {
+    private void swapAdapters() {
         projectListViewAdapter.swapList(mMyAppDb.gettAllProjects(uid));
         projectListViewAdapter.notifyDataSetChanged();
         educationListViewAdapter.swapList(mMyAppDb.gettAllEducation(uid));
@@ -199,7 +185,7 @@ public class ProfileActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -214,7 +200,7 @@ public class ProfileActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-     public void updateUi(){
+     private void updateUi(){
         if (session.isLoggedIn()) {
             // get user data from session
             HashMap<String, String> user = session.getUserDetails();
@@ -223,7 +209,7 @@ public class ProfileActivity extends AppCompatActivity
             String name = user.get(SessionManager.KEY_NAME);
             username.setText(name);
             mUserName.setText(name);
-            summary = mMyAppDb.getSummary(user.get(SessionManager.KEY_ID));
+            Summary summary = mMyAppDb.getSummary(user.get(SessionManager.KEY_ID));
             if (summary != null) {
 
                 mSummary.setText(summary.getSummary());
@@ -232,7 +218,7 @@ public class ProfileActivity extends AppCompatActivity
 
             // email
             String email = user.get(SessionManager.KEY_EMAIL);
-            Emailid.setText(email);
+            EmailId.setText(email);
             mEmail.setText(email);
 
             String photouri = user.get(SessionManager.KEY_PHOTO);
@@ -240,35 +226,36 @@ public class ProfileActivity extends AppCompatActivity
                     .with(this)
                     .load(photouri)
                     .centerCrop()
-                    .into(profilepic);
+                    .into(mProfilePic);
             Glide
                     .with(this)
                     .load(photouri)
                     .centerCrop()
                     .into(mProfilePicButton);
             String experience = mMyAppDb.getExperience(uid);
-            List<String> strings = mMyAppDb.selectAllUsers();
-            if (!experience.equals(null)) {
+            if (experience!=null) {
                 mExperience.setText(experience+" years");
             }
-            projects = mMyAppDb.gettAllProjects(uid);
-            projectListViewAdapter = new ProjectListViewAdapter(projects,this);
-            mProjectsListView.setAdapter(projectListViewAdapter);
-            mEducationList = mMyAppDb.gettAllEducation(uid);
-            educationListViewAdapter = new EducationListViewAdapter(mEducationList,this);
-            mEducationListView.setAdapter(educationListViewAdapter);
-            interestlist = mMyAppDb.gettAllInterest(uid);
-            interestsListViewAdapter = new InterestsListViewAdapter(interestlist,this);
-            mInterestListView.setAdapter(interestsListViewAdapter);
-            Utility.setListViewHeightBasedOnChildren(mProjectsListView);
-            Utility.setListViewHeightBasedOnChildren(mEducationListView);
-            Utility.setListViewHeightBasedOnChildren(mInterestListView);
         }
     }
+    private void setAdapters() {
+        List<Projects> projects = mMyAppDb.gettAllProjects(uid);
+        projectListViewAdapter = new ProjectListViewAdapter(projects,this);
+        mProjectsListView.setAdapter(projectListViewAdapter);
+        List<Education> educationList = mMyAppDb.gettAllEducation(uid);
+        educationListViewAdapter = new EducationListViewAdapter(educationList,this);
+        mEducationListView.setAdapter(educationListViewAdapter);
+        List<Interest> interestlist = mMyAppDb.gettAllInterest(uid);
+        interestsListViewAdapter = new InterestsListViewAdapter(interestlist,this);
+        mInterestListView.setAdapter(interestsListViewAdapter);
+        Utility.setListViewHeightBasedOnChildren(mProjectsListView);
+        Utility.setListViewHeightBasedOnChildren(mEducationListView);
+        Utility.setListViewHeightBasedOnChildren(mInterestListView);
 
+    }
     @Override
     public void onClick(View v) {
-        Intent intent = null;
+        Intent intent;
         int id = v.getId();
         switch (id) {
             case R.id.Summary:
@@ -305,7 +292,6 @@ public class ProfileActivity extends AppCompatActivity
 
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
-        View view = inflater.inflate(R.layout.experience, null);
 
         builder.setView(inflater.inflate(R.layout.experience, null))
                 // Add action buttons
@@ -333,7 +319,7 @@ public class ProfileActivity extends AppCompatActivity
         experienceDialog.show();
     }
 
-    public boolean checkPermission(){
+    private boolean checkPermission(){
             int result = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
             int result1 = ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA);
 
@@ -345,7 +331,7 @@ public class ProfileActivity extends AppCompatActivity
         ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, PERMISSION_REQUEST_CODE);
 
     }
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE:
                 if (grantResults.length > 0) {
@@ -436,7 +422,7 @@ public class ProfileActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode==REFRESH) {
-            swapadapters();
+            swapAdapters();
         }else if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
             session.changeImageuri(mCurrentPhotoPath);
             updateUi();

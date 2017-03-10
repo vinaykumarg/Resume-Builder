@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.example.vinayg.resumebuilder.interests.InterestsActivity">
+    tools:context="com.example.vinayg.resumebuilder.activities.InterestsActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -14,7 +14,15 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
     </android.support.design.widget.AppBarLayout>
-
+    <TextView
+        android:id="@+id/nointerest"
+        android:textAlignment="center"
+        android:textColor="@color/com_facebook_blue"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/nointerests"/>
     <include layout="@layout/content_interests"/>
 
     <android.support.design.widget.FloatingActionButton

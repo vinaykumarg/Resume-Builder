@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.vinayg.resumebuilder.homepage.ProfileActivity"
+    tools:context="com.example.vinayg.resumebuilder.activities.ProfileActivity"
     tools:showIn="@layout/app_bar_main">
 
     <RelativeLayout
@@ -36,10 +36,10 @@
             android:textSize="14sp"
             android:textColor="#fff"
             android:layout_alignBottom="@+id/user_profile_name"
-            android:layout_toLeftOf="@+id/user_profile_name"
-            android:layout_toStartOf="@+id/user_profile_name"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:id="@+id/textView3"
-            android:layout_alignTop="@+id/user_profile_name"/>
+            android:layout_toEndOf="@+id/user_profile_photo"
+            android:layout_toRightOf="@+id/user_profile_photo"/>
         <TextView
             android:id="@+id/user_profile_name"
             android:layout_width="wrap_content"
@@ -49,10 +49,9 @@
             android:textSize="14sp"
             android:textStyle="bold"
             android:layout_marginTop="20dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginRight="70dp"
-            android:layout_marginEnd="70dp"/>
+            android:layout_toEndOf="@+id/textView3"
+            android:layout_toRightOf="@+id/textView3"
+            />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -81,7 +80,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Experience :"
+            android:text="Experience : "
             android:textColor="#fff"
             android:textSize="14sp"
             android:layout_marginTop="10dp"
@@ -101,8 +100,8 @@
             android:clickable="true"
             android:layout_marginTop="10dp"
             android:layout_below="@+id/user_profile_email"
-            android:layout_alignRight="@+id/user_profile_name"
-            android:layout_alignEnd="@+id/user_profile_name"/>
+            android:layout_toRightOf="@+id/textView5"
+            android:layout_toEndOf="@+id/textView5"/>
 
     </RelativeLayout>
 
@@ -128,7 +127,7 @@
                 android:clickable="true"
                 android:id="@+id/Summary"
                 android:padding="20dp"
-                android:background="#fff">
+                android:background="@drawable/textlines">
                 <TextView
                     android:textColor="#096AAB"
                     android:textSize="@dimen/abc_text_size_large_material"

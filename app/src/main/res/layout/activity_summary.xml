@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.example.vinayg.resumebuilder.Summary.SummaryActivity">
+    tools:context="com.example.vinayg.resumebuilder.activities.SummaryActivity">
 
     <include layout="@layout/content_summary"/>
 

@@ -1,4 +1,4 @@
-package com.example.vinayg.resumebuilder.education;
+package com.example.vinayg.resumebuilder.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +10,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.vinayg.resumebuilder.R;
-import com.example.vinayg.resumebuilder.homepage.SessionManager;
+import com.example.vinayg.resumebuilder.authorization.SessionManager;
 import com.example.vinayg.resumebuilder.database.MyAppDb;
 
 import java.util.ArrayList;

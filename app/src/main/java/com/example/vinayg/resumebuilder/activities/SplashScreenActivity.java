@@ -1,4 +1,4 @@
-package com.example.vinayg.resumebuilder.homepage;
+package com.example.vinayg.resumebuilder.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,12 +10,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.vinayg.resumebuilder.R;
+import com.example.vinayg.resumebuilder.authorization.SessionManager;
+
+import static com.example.vinayg.resumebuilder.activities.AboutActivity.session;
 
 /**
  * Created by vinay.g.
  */
 
-public class SplashScreen extends Activity {
+public class SplashScreenActivity extends Activity {
     private static int SPLASH_TIME_OUT = 5000;
     private Animation mAnimation1, mAnimation2;
     private TextView sampleTextView;
@@ -43,8 +46,14 @@ public class SplashScreen extends Activity {
             public void run() {
                 // This method will be executed once the timer is over
                 // Start your app main activity
-                Intent i = new Intent(SplashScreen.this, ProfileActivity.class);
-                startActivity(i);
+                session = new SessionManager(getApplicationContext());
+                if(!session.isLoggedIn()) {
+                    Intent i = new Intent(SplashScreenActivity.this, LoginActivity.class);
+                    startActivity(i);
+                } else {
+                    Intent i = new Intent(SplashScreenActivity.this, ProfileActivity.class);
+                    startActivity(i);
+                }
 
                 // close this activity
                 finish();

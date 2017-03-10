@@ -1,4 +1,4 @@
-package com.example.vinayg.resumebuilder.homepage;
+package com.example.vinayg.resumebuilder.fragments;
 
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -10,8 +10,7 @@ import android.support.v7.app.AppCompatDelegate;
 import android.widget.Toolbar;
 
 import com.example.vinayg.resumebuilder.R;
-
-import static com.example.vinayg.resumebuilder.homepage.AboutActivity.logout;
+import com.example.vinayg.resumebuilder.activities.AboutActivity;
 
 /**
  * Created by vinay.g.
@@ -49,7 +48,7 @@ public class MyPreferenceFragment extends PreferenceFragment
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 // TODO Auto-generated method
-                logout();
+                ((AboutActivity)getActivity()).logout();
                 return false;
             }
         });

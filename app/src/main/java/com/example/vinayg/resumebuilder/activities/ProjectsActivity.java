@@ -1,4 +1,4 @@
-package com.example.vinayg.resumebuilder.education;
+package com.example.vinayg.resumebuilder.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,49 +8,43 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
-import com.example.vinayg.resumebuilder.adapters.ClickListener;
-import com.example.vinayg.resumebuilder.adapters.RecyclerTouchListener;
+import com.example.vinayg.resumebuilder.listeners.ClickListener;
+import com.example.vinayg.resumebuilder.listeners.RecyclerTouchListener;
 import com.example.vinayg.resumebuilder.R;
-import com.example.vinayg.resumebuilder.homepage.SessionManager;
-import com.example.vinayg.resumebuilder.adapters.EducationListAdapter;
-import com.example.vinayg.resumebuilder.database.Education;
+import com.example.vinayg.resumebuilder.authorization.SessionManager;
+import com.example.vinayg.resumebuilder.adapters.ProjectListAdapter;
 import com.example.vinayg.resumebuilder.database.MyAppDb;
+import com.example.vinayg.resumebuilder.models.Projects;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class EducationActivity extends AppCompatActivity {
+public class ProjectsActivity extends AppCompatActivity {
 
-    private MyAppDb myAppDb;
-    private SessionManager session;
-    private HashMap<String, String> user;
     private RecyclerView recyclerView;
-    public static final int EDUCATIONSAVED = 1;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private List<Education> mEducations;
-    private EducationListAdapter mAdapter;
+    private ProjectListAdapter mAdapter;
+    private MyAppDb myAppDb;
+    private List<Projects> projects;
+    private int projectsave = 1;
+    private SessionManager session;
     private static final int REFRESH = 222;
+    private HashMap<String, String> user;
+    private TextView infoTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_education);
+        setContentView(R.layout.activity_projects);
+        infoTextView = (TextView) findViewById(R.id.noprojects);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         myAppDb = new MyAppDb(this);
         myAppDb.open();
         session = new SessionManager(this);
         user  = session.getUserDetails();
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), AddEducationActivity.class);
-                startActivityForResult(intent,1);
-            }
-        });
-        mEducations = myAppDb.gettAllEducation(user.get(SessionManager.KEY_ID));
-        mAdapter = new EducationListAdapter(mEducations);
+        projects = myAppDb.gettAllProjects(user.get(SessionManager.KEY_ID));
+        mAdapter = new ProjectListAdapter(projects);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -58,10 +52,9 @@ public class EducationActivity extends AppCompatActivity {
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
-
-                Intent intent =  new Intent(getApplicationContext(), EducationEditorActivity.class);
+                Intent intent =  new Intent(getApplicationContext(), ProjectEditActivity.class);
                 intent.putExtra("position",position);
-                startActivityForResult(intent, EDUCATIONSAVED);
+                startActivityForResult(intent,projectsave);
             }
 
             @Override
@@ -69,13 +62,31 @@ public class EducationActivity extends AppCompatActivity {
 
             }
         }));
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), AddProjectsActivity.class);
+                startActivityForResult(intent,projectsave);
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!projects.isEmpty()) {
+            infoTextView.setVisibility(View.INVISIBLE);
+        } else {
+            infoTextView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode== EDUCATIONSAVED) {
-            mAdapter.swapList(myAppDb.gettAllEducation(user.get(SessionManager.KEY_ID)));
+        if (requestCode==projectsave) {
+            mAdapter.swapList(myAppDb.gettAllProjects(user.get(SessionManager.KEY_ID)));
             mAdapter.notifyDataSetChanged();
         }
     }

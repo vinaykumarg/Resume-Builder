@@ -27,7 +27,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_summary">Summary</string>
     <string name="title_activity_projects">Projects</string>
-    <string name="title_activity_education">Educations</string>
+    <string name="title_activity_education">Education</string>
     <string name="title_activity_interests">Interests</string>
     <string name="AboutME">AboutMe</string>
     <string name="save">Save</string>
@@ -58,4 +58,7 @@
     <string name="title_activity_edit_education">Edit Education</string>
     <string name="title_activity_add_interest">Add Interests</string>
     <string name="title_activity_edit_interest">Edit Interest</string>
+    <string name="noprojects">no projects added yet</string>
+    <string name="nointerests">no interests added yet</string>
+    <string name="noeducation">no Qualifications added yet</string>
 </resources>

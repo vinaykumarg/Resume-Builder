@@ -1,4 +1,4 @@
-package com.example.vinayg.resumebuilder.projects;
+package com.example.vinayg.resumebuilder.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,40 +8,46 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
-import com.example.vinayg.resumebuilder.adapters.ClickListener;
-import com.example.vinayg.resumebuilder.adapters.RecyclerTouchListener;
 import com.example.vinayg.resumebuilder.R;
-import com.example.vinayg.resumebuilder.homepage.SessionManager;
-import com.example.vinayg.resumebuilder.adapters.ProjectListAdapter;
+import com.example.vinayg.resumebuilder.listeners.ClickListener;
+import com.example.vinayg.resumebuilder.adapters.InterestListAdapter;
+import com.example.vinayg.resumebuilder.listeners.RecyclerTouchListener;
+import com.example.vinayg.resumebuilder.models.Interest;
 import com.example.vinayg.resumebuilder.database.MyAppDb;
-import com.example.vinayg.resumebuilder.database.Projects;
+import com.example.vinayg.resumebuilder.authorization.SessionManager;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class ProjectsActivity extends AppCompatActivity {
+import static com.example.vinayg.resumebuilder.activities.EducationActivity.EDUCATIONSAVED;
 
-    private RecyclerView recyclerView;
-    private ProjectListAdapter mAdapter;
+public class InterestsActivity extends AppCompatActivity {
+
     private MyAppDb myAppDb;
-    private List<Projects> projects;
-    private int projectsave = 1;
     private SessionManager session;
-    private static final int REFRESH = 222;
     private HashMap<String, String> user;
+    private RecyclerView recyclerView;
+    private List<Interest> mInterests;
+    private InterestListAdapter mAdapter;
+    private String uid;
+    private static final int REFRESH = 222;
+    private TextView infoTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_projects);
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        setContentView(R.layout.activity_interests);
+        infoTextView = (TextView) findViewById(R.id.nointerest);
         myAppDb = new MyAppDb(this);
         myAppDb.open();
         session = new SessionManager(this);
         user  = session.getUserDetails();
-        projects = myAppDb.gettAllProjects(user.get(SessionManager.KEY_ID));
-        mAdapter = new ProjectListAdapter(projects);
+        uid = user.get(SessionManager.KEY_ID);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        mInterests = myAppDb.gettAllInterest(user.get(SessionManager.KEY_ID));
+        mAdapter = new InterestListAdapter(mInterests);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -49,10 +55,10 @@ public class ProjectsActivity extends AppCompatActivity {
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Projects project = projects.get(position);
-                Intent intent =  new Intent(getApplicationContext(), ProjectEditActivity.class);
+
+                Intent intent =  new Intent(getApplicationContext(), InterestEditActivity.class);
                 intent.putExtra("position",position);
-                startActivityForResult(intent,projectsave);
+                startActivityForResult(intent, EDUCATIONSAVED);
             }
 
             @Override
@@ -60,27 +66,34 @@ public class ProjectsActivity extends AppCompatActivity {
 
             }
         }));
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), AddProjectsActivity.class);
-                startActivityForResult(intent,projectsave);
+                Intent intent = new Intent(getApplicationContext(), InterestAddActivity.class);
+                startActivityForResult(intent,1);
             }
         });
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==1) {
+            mAdapter.swap(myAppDb.gettAllInterest(uid));
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==projectsave) {
-            mAdapter.swapList(myAppDb.gettAllProjects(user.get(SessionManager.KEY_ID)));
-            mAdapter.notifyDataSetChanged();
+    protected void onResume() {
+        super.onResume();
+
+        if (!mInterests.isEmpty()) {
+            infoTextView.setVisibility(View.INVISIBLE);
+        } else {
+            infoTextView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -88,10 +101,6 @@ public class ProjectsActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         setResult(REFRESH);
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        myAppDb.close();
+
     }
 }

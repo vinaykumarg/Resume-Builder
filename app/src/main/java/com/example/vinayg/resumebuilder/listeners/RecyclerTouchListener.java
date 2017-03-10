@@ -1,4 +1,4 @@
-package com.example.vinayg.resumebuilder.adapters;
+package com.example.vinayg.resumebuilder.listeners;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

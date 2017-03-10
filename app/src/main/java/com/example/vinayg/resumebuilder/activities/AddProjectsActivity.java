@@ -1,8 +1,6 @@
-package com.example.vinayg.resumebuilder.projects;
+package com.example.vinayg.resumebuilder.activities;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -11,8 +9,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.vinayg.resumebuilder.R;
-import com.example.vinayg.resumebuilder.homepage.SessionManager;
 import com.example.vinayg.resumebuilder.database.MyAppDb;
+import com.example.vinayg.resumebuilder.authorization.SessionManager;
 
 import java.util.HashMap;
 
@@ -34,17 +32,12 @@ public class AddProjectsActivity extends AppCompatActivity implements View.OnCli
         mDescriptionText = (EditText) findViewById(R.id.input_desc);
         mButton = (Button) findViewById(R.id.btn_save);
         mButton.setOnClickListener(this);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id==R.id.fab) {
-            Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-        }else if (id==R.id.btn_save) {
+        if (id==R.id.btn_save) {
             String title = mTitletext.getText().toString();
             String Description  = mDescriptionText.getText().toString();
             String uid = user.get(SessionManager.KEY_ID);

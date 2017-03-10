@@ -1,4 +1,4 @@
-package com.example.vinayg.resumebuilder.database;
+package com.example.vinayg.resumebuilder.models;
 
 /**
  * Created by vinay.g.

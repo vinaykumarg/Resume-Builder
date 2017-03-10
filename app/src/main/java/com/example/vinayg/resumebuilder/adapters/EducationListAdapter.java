@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.vinayg.resumebuilder.R;
-import com.example.vinayg.resumebuilder.database.Education;
+import com.example.vinayg.resumebuilder.models.Education;
 
 import java.util.List;
 

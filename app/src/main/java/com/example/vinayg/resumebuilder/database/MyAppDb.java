@@ -6,12 +6,18 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.vinayg.resumebuilder.models.Education;
+import com.example.vinayg.resumebuilder.models.Interest;
+import com.example.vinayg.resumebuilder.models.Projects;
+import com.example.vinayg.resumebuilder.models.Summary;
+import com.example.vinayg.resumebuilder.models.User;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.vinayg.resumebuilder.database.MyDataHelper.KEY_EDUCATION;
-import static com.example.vinayg.resumebuilder.database.MyDataHelper.KEY_INTERESTID;
-import static com.example.vinayg.resumebuilder.database.MyDataHelper.KEY_PROJECT;
+import static com.example.vinayg.resumebuilder.database.MyDataHelper.COLUMN_KEY_EDUCATION;
+import static com.example.vinayg.resumebuilder.database.MyDataHelper.COLUMN_KEY_INTERESTID;
+import static com.example.vinayg.resumebuilder.database.MyDataHelper.COLUMN_KEY_PROJECT;
 
 /**
  * Created by vinay.g.
@@ -20,20 +26,20 @@ import static com.example.vinayg.resumebuilder.database.MyDataHelper.KEY_PROJECT
 public class MyAppDb {
     private SQLiteDatabase database;
     private MyDataHelper dbHelper;
-    private String[] userColumns = {MyDataHelper.KEY_ID,MyDataHelper.KEY_UID,MyDataHelper.KEY_EMAIL,MyDataHelper.KEY_EXPERIENCE};
-    private String[] summaryColums = {MyDataHelper.KEY_ID,MyDataHelper.KEY_SUMMARY};
-    private String[] educationColumns = {MyDataHelper.KEY_EDUCATION,MyDataHelper.KEY_ID,MyDataHelper.KEY_TYPEOFINSTITUTE,MyDataHelper.KEY_INSTITUTE,MyDataHelper.KEY_STREAM,
-            MyDataHelper.KEY_START,MyDataHelper.KEY_STOP,MyDataHelper.KEY_SCORE};
-    private String[] projectsColumns = {MyDataHelper.KEY_PROJECT,MyDataHelper.KEY_ID,MyDataHelper.KEY_TITLE,MyDataHelper.KEY_DESCRIPTION};
-    private String[] interestColumns = {MyDataHelper.KEY_INTERESTID,MyDataHelper.KEY_ID,MyDataHelper.KEY_INTEREST};
+    private String[] userColumns = {MyDataHelper.KEY_ID,MyDataHelper.COLUMN_KEY_UID,MyDataHelper.COLUMN_EMAIL,MyDataHelper.COLUMN_EXPERIENCE};
+    private String[] summaryColums = {MyDataHelper.KEY_ID,MyDataHelper.COLUMN_SUMMARY};
+    private String[] educationColumns = {MyDataHelper.COLUMN_KEY_EDUCATION,MyDataHelper.KEY_ID,MyDataHelper.COLUMN_TYPEOFINSTITUTE,MyDataHelper.COLUMN_INSTITUTE,MyDataHelper.COLUMN_STREAM,
+            MyDataHelper.COLUMN_START,MyDataHelper.COLUMN_STOP,MyDataHelper.COLUMN_SCORE};
+    private String[] projectsColumns = {MyDataHelper.COLUMN_KEY_PROJECT,MyDataHelper.KEY_ID,MyDataHelper.COLUMN_TITLE,MyDataHelper.COLUMN_DESCRIPTION};
+    private String[] interestColumns = {MyDataHelper.COLUMN_KEY_INTERESTID,MyDataHelper.KEY_ID,MyDataHelper.COLUMN_INTEREST};
     public MyAppDb(Context context){
         dbHelper = new MyDataHelper(context);
     }
     public void createUser(String id, String username, String email ) {
         ContentValues values = new ContentValues();
         values.put(MyDataHelper.KEY_ID,id);
-        values.put(MyDataHelper.KEY_UID, username);
-        values.put(MyDataHelper.KEY_EMAIL , email);
+        values.put(MyDataHelper.COLUMN_KEY_UID, username);
+        values.put(MyDataHelper.COLUMN_EMAIL, email);
         database.insert(MyDataHelper.TABLE_USER, null,
                 values);
     }
@@ -58,7 +64,7 @@ public class MyAppDb {
     public void createSummary(String id, String Summary) {
         ContentValues values = new ContentValues();
         values.put(MyDataHelper.KEY_ID, id);
-        values.put(MyDataHelper.KEY_SUMMARY, Summary);
+        values.put(MyDataHelper.COLUMN_SUMMARY, Summary);
         String selection = summaryColums[0] + " = ?";
         String[] selectionArgs = { id };
         if (ifSummeryExists(id)){
@@ -91,20 +97,20 @@ public class MyAppDb {
     public void createEducation(String type,String id, String institute, String stream, String start, String stop, String score){
         ContentValues values = new ContentValues();
         values.put(MyDataHelper.KEY_ID, id);
-        values.put(MyDataHelper.KEY_TYPEOFINSTITUTE,type);
-        values.put(MyDataHelper.KEY_INSTITUTE, institute);
-        values.put(MyDataHelper.KEY_STREAM, stream);
-        values.put(MyDataHelper.KEY_START,start);
-        values.put(MyDataHelper.KEY_STOP,stop);
-        values.put(MyDataHelper.KEY_SCORE,score);
+        values.put(MyDataHelper.COLUMN_TYPEOFINSTITUTE,type);
+        values.put(MyDataHelper.COLUMN_INSTITUTE, institute);
+        values.put(MyDataHelper.COLUMN_STREAM, stream);
+        values.put(MyDataHelper.COLUMN_START,start);
+        values.put(MyDataHelper.COLUMN_STOP,stop);
+        values.put(MyDataHelper.COLUMN_SCORE,score);
         database.insert(MyDataHelper.TABLE_EDUCATION, null,
                 values);
     }
     public void createProjects(String id, String title, String description ){
         ContentValues values = new ContentValues();
         values.put(MyDataHelper.KEY_ID, id);
-        values.put(MyDataHelper.KEY_TITLE,title);
-        values.put(MyDataHelper.KEY_DESCRIPTION,description);
+        values.put(MyDataHelper.COLUMN_TITLE,title);
+        values.put(MyDataHelper.COLUMN_DESCRIPTION,description);
         database.insert(MyDataHelper.TABLE_PROJECTS, null,
                 values);
     }
@@ -119,14 +125,17 @@ public class MyAppDb {
     public void createInterest(String id, String interest) {
         ContentValues values = new ContentValues();
         values.put(MyDataHelper.KEY_ID, id);
-        values.put(MyDataHelper.KEY_INTEREST,interest);
+        values.put(MyDataHelper.COLUMN_INTEREST,interest);
         database.insert(MyDataHelper.TABLE_INTERESTS, null,
                 values);
     }
 
     public boolean checkifexist(String id) {
-        List<String> list = selectAllUsers();
-        if (list.contains(id)) {
+        String selection = userColumns[0] + " = ?";
+        String[] selectionArgs = { id };
+        Cursor cursor = database.query(MyDataHelper.TABLE_USER, userColumns,
+                selection, selectionArgs, null, null, null);
+        if (cursor.moveToFirst()) {
             return true;
         }
         return false;
@@ -255,7 +264,7 @@ public class MyAppDb {
 
     public void deleteProject(int pid) {
         // Define 'where' part of query.
-        String selection = KEY_PROJECT + " = ?";
+        String selection = COLUMN_KEY_PROJECT + " = ?";
         // Specify arguments in placeholder order.
         String[] selectionArgs = { ""+pid };
         // Issue SQL statement.
@@ -264,7 +273,7 @@ public class MyAppDb {
 
     public void deleteEducation(long id) {
         // Define 'where' part of query.
-        String selection = KEY_EDUCATION + " = ?";
+        String selection = COLUMN_KEY_EDUCATION + " = ?";
         // Specify arguments in placeholder order.
         String[] selectionArgs = { ""+id };
         // Issue SQL statement.
@@ -274,7 +283,7 @@ public class MyAppDb {
     public void updateInterest(String interestid, String uid, String interest) {
         ContentValues values = new ContentValues();
         values.put(interestColumns[1], uid);
-        values.put(projectsColumns[2],interest);
+        values.put(interestColumns[2],interest);
         String selection = interestColumns[0] + " = ?";
         String[] selectionArgs = { interestid };
         database.update(MyDataHelper.TABLE_INTERESTS, values,selection, selectionArgs);
@@ -283,7 +292,7 @@ public class MyAppDb {
 
     public void deleteInterest(String id) {
         // Define 'where' part of query.
-        String selection = KEY_INTERESTID + " = ?";
+        String selection = COLUMN_KEY_INTERESTID + " = ?";
         // Specify arguments in placeholder order.
         String[] selectionArgs = { id };
         // Issue SQL statement.
@@ -295,12 +304,12 @@ public class MyAppDb {
         String[] selectionArgs = { ""+educationid };
         ContentValues values = new ContentValues();
         values.put(MyDataHelper.KEY_ID, uid);
-        values.put(MyDataHelper.KEY_TYPEOFINSTITUTE,type);
-        values.put(MyDataHelper.KEY_INSTITUTE, institute);
-        values.put(MyDataHelper.KEY_STREAM, stream);
-        values.put(MyDataHelper.KEY_START,startyear);
-        values.put(MyDataHelper.KEY_STOP,endyear);
-        values.put(MyDataHelper.KEY_SCORE,score);
+        values.put(MyDataHelper.COLUMN_TYPEOFINSTITUTE,type);
+        values.put(MyDataHelper.COLUMN_INSTITUTE, institute);
+        values.put(MyDataHelper.COLUMN_STREAM, stream);
+        values.put(MyDataHelper.COLUMN_START,startyear);
+        values.put(MyDataHelper.COLUMN_STOP,endyear);
+        values.put(MyDataHelper.COLUMN_SCORE,score);
         database.update(MyDataHelper.TABLE_EDUCATION, values,selection, selectionArgs);
     }
 

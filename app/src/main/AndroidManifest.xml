@@ -32,7 +32,7 @@
             android:value="@string/facebook_app_id"/>
 
         <activity
-            android:name=".homepage.SplashScreen"
+            android:name=".activities.SplashScreenActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar">
@@ -54,7 +54,7 @@
                 <data android:scheme="@string/fb_login_protocol_scheme"/>
             </intent-filter>
         </activity>
-        <activity android:name=".homepage.LoginActivity">
+        <activity android:name=".activities.LoginActivity">
         </activity>
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
@@ -65,93 +65,93 @@
             android:value="@integer/google_play_services_version"/>
 
         <activity
-            android:name=".homepage.ProfileActivity"
+            android:name=".activities.ProfileActivity"
             android:label="@string/title_activity_main2"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".homepage.AboutActivity"
-            android:parentActivityName=".homepage.ProfileActivity">
+            android:name=".activities.AboutActivity"
+            android:parentActivityName=".activities.ProfileActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.vinayg.resumebuilder.homepage.ProfileActivity"/>
+                android:value="com.example.vinayg.resumebuilder.activities.ProfileActivity"/>
         </activity>
         <activity
-            android:name=".Summary.SummaryActivity"
+            android:name=".activities.SummaryActivity"
             android:label="@string/title_activity_summary"
-            android:parentActivityName=".homepage.ProfileActivity">
+            android:parentActivityName=".activities.ProfileActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.vinayg.resumebuilder.homepage.ProfileActivity"/>
+                android:value="com.example.vinayg.resumebuilder.activities.ProfileActivity"/>
         </activity>
         <activity
-            android:name=".projects.ProjectsActivity"
+            android:name=".activities.ProjectsActivity"
             android:label="@string/title_activity_projects"
-            android:parentActivityName=".homepage.ProfileActivity">
+            android:parentActivityName=".activities.ProfileActivity">
         </activity>
         <activity
-            android:name=".education.EducationActivity"
+            android:name=".activities.EducationActivity"
             android:label="@string/title_activity_education"
-            android:parentActivityName=".homepage.ProfileActivity">
+            android:parentActivityName=".activities.ProfileActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.vinayg.resumebuilder.homepage.ProfileActivity"/>
+                android:value="com.example.vinayg.resumebuilder.activities.ProfileActivity"/>
         </activity>
         <activity
-            android:name=".interests.InterestsActivity"
+            android:name=".activities.InterestsActivity"
             android:label="@string/title_activity_interests"
-            android:parentActivityName=".homepage.ProfileActivity">
+            android:parentActivityName=".activities.ProfileActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.vinayg.resumebuilder.homepage.ProfileActivity"/>
+                android:value="com.example.vinayg.resumebuilder.activities.ProfileActivity"/>
         </activity>
         <activity
-            android:name=".projects.AddProjectsActivity"
+            android:name=".activities.AddProjectsActivity"
             android:label="@string/title_activity_add_projects"
-            android:parentActivityName=".projects.ProjectsActivity">
+            android:parentActivityName=".activities.ProjectsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.vinayg.resumebuilder.projects.ProjectsActivity"/>
+                android:value="com.example.vinayg.resumebuilder.activities.ProjectsActivity"/>
         </activity>
         <activity
-            android:name=".projects.ProjectEditActivity"
+            android:name=".activities.ProjectEditActivity"
             android:label="@string/title_activity_edit_projects"
-            android:parentActivityName=".projects.ProjectsActivity">
+            android:parentActivityName=".activities.ProjectsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.vinayg.resumebuilder.projects.ProjectsActivity"/>
+                android:value="com.example.vinayg.resumebuilder.activities.ProjectsActivity"/>
         </activity>
         <activity
-            android:name=".education.AddEducationActivity"
+            android:name=".activities.AddEducationActivity"
             android:label="@string/title_activity_add_education"
-            android:parentActivityName=".education.EducationActivity">
+            android:parentActivityName=".activities.EducationActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.vinayg.resumebuilder.education.EducationActivity"/>
+                android:value="com.example.vinayg.resumebuilder.activities.EducationActivity"/>
         </activity>
         <activity
-            android:name=".education.EducationEditorActivity"
+            android:name=".activities.EducationEditorActivity"
             android:label="@string/title_activity_edit_education"
-            android:parentActivityName=".education.EducationActivity">
+            android:parentActivityName=".activities.EducationActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.vinayg.resumebuilder.education.EducationActivity"/>
+                android:value="com.example.vinayg.resumebuilder.activities.EducationActivity"/>
         </activity>
         <activity
-            android:name=".interests.InterestEditActivity"
+            android:name=".activities.InterestEditActivity"
             android:label="@string/title_activity_edit_interest"
-            android:parentActivityName=".interests.InterestsActivity">
+            android:parentActivityName=".activities.InterestsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.vinayg.resumebuilder.interests.InterestsActivity"/>
+                android:value="com.example.vinayg.resumebuilder.activities.InterestsActivity"/>
         </activity>
         <activity
-            android:name=".interests.InterestAddActivity"
+            android:name=".activities.InterestAddActivity"
             android:label="@string/title_activity_add_interest"
-            android:parentActivityName=".interests.InterestsActivity">
+            android:parentActivityName=".activities.InterestsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.vinayg.resumebuilder.interests.InterestsActivity"/>
+                android:value="com.example.vinayg.resumebuilder.activities.InterestsActivity"/>
         </activity>
     </application>
 

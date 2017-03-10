@@ -11,7 +11,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.vinayg.resumebuilder.projects.AddProjectsActivity"
+    tools:context="com.example.vinayg.resumebuilder.activities.AddProjectsActivity"
     tools:showIn="@layout/activity_add_projects">
     <LinearLayout
         android:layout_width="fill_parent"
@@ -19,8 +19,7 @@
         android:layout_marginTop="?attr/actionBarSize"
         android:orientation="vertical"
         android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="60dp">
+        android:paddingRight="20dp">
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_name"
