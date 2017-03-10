@@ -41,7 +41,7 @@ import com.example.vinayg.resumebuilder.R;
 import com.example.vinayg.resumebuilder.adapters.EducationListViewAdapter;
 import com.example.vinayg.resumebuilder.adapters.InterestsListViewAdapter;
 import com.example.vinayg.resumebuilder.adapters.ProjectListViewAdapter;
-import com.example.vinayg.resumebuilder.adapters.Utility;
+import com.example.vinayg.resumebuilder.utilities.Utility;
 import com.example.vinayg.resumebuilder.authorization.SessionManager;
 import com.example.vinayg.resumebuilder.database.MyAppDb;
 import com.example.vinayg.resumebuilder.models.Education;

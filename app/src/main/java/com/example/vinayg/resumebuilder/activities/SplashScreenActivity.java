@@ -45,7 +45,6 @@ public class SplashScreenActivity extends Activity {
             @Override
             public void run() {
                 // This method will be executed once the timer is over
-                // Start your app main activity
                 session = new SessionManager(getApplicationContext());
                 if(!session.isLoggedIn()) {
                     Intent i = new Intent(SplashScreenActivity.this, LoginActivity.class);

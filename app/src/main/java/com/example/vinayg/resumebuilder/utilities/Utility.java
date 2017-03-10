@@ -1,4 +1,4 @@
-package com.example.vinayg.resumebuilder.adapters;
+package com.example.vinayg.resumebuilder.utilities;
 
 import android.view.View;
 import android.view.ViewGroup;
